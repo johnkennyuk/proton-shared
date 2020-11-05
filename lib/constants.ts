@@ -796,11 +796,3 @@ export const FORKABLE_APPS = new Set(
 );
 
 export const AES256 = 'aes256';
-
-export const FOCUS_AREAS = {
-    PROTONMAIL: {
-        SIDEBAR: 'sidebar',
-        ELEMENT_LIST: 'element-list',
-        ELEMENT_DETAILS: 'element-details',
-    },
-};
