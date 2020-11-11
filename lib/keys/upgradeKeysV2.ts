@@ -1,6 +1,14 @@
 import { computeKeyPassword, generateKeySalt } from 'pm-srp';
 
-import { Address as tsAddress, Api, CachedKey, Key as tsKey, User as tsUser } from '../interfaces';
+import {
+    Address as tsAddress,
+    Api,
+    CachedKey,
+    Key as tsKey,
+    User as tsUser,
+    OrganizationKey as tsOrganizationKey,
+    CachedOrganizationKey,
+} from '../interfaces';
 import { getOldUserIDEmailHelper, reformatAddressKey } from './keys';
 import { srpVerify } from '../srp';
 import { upgradeKeysRoute } from '../api/keys';
@@ -9,7 +17,7 @@ import { getDecryptedAddressKeys } from './getDecryptedAddressKeys';
 import isTruthy from '../helpers/isTruthy';
 import { getOrganizationKeys } from '../api/organization';
 import { USER_ROLES } from '../constants';
-import { getDecryptedOrganizationKey, OrganizationKey } from './getDecryptedOrganizationKey';
+import { getDecryptedOrganizationKey } from './getDecryptedOrganizationKey';
 import { reformatOrganizationKey } from './organizationKeys';
 
 export const getV2KeyToUpgrade = (Key: tsKey) => {
@@ -68,7 +76,7 @@ interface UpgradeKeysArgs {
     api: Api;
     isOnePasswordMode?: boolean;
     userKeys: CachedKey[];
-    organizationKey?: OrganizationKey;
+    organizationKey?: CachedOrganizationKey;
     addressesKeys: {
         Address: tsAddress;
         keys: CachedKey[];
@@ -180,7 +188,7 @@ export const upgradeV2KeysHelper = async ({
 
     const organizationKey =
         User.Role === USER_ROLES.ADMIN_ROLE
-            ? await api<{ PublicKey: string; PrivateKey: string }>(getOrganizationKeys()).then((Key) => {
+            ? await api<tsOrganizationKey>(getOrganizationKeys()).then((Key) => {
                   return getDecryptedOrganizationKey({ keyPassword, Key });
               })
             : undefined;

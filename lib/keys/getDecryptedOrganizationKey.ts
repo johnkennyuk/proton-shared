@@ -1,23 +1,13 @@
-import { decryptPrivateKey, OpenPGPKey } from 'pmcrypto';
-
-export interface OrganizationKeyResponse {
-    PrivateKey?: string;
-    PublicKey: string;
-}
-
-export interface OrganizationKey {
-    Key: OrganizationKeyResponse;
-    privateKey?: OpenPGPKey;
-    error?: Error;
-}
+import { decryptPrivateKey } from 'pmcrypto';
+import { CachedOrganizationKey, OrganizationKey } from '../interfaces';
 
 export const getDecryptedOrganizationKey = async ({
     keyPassword,
     Key,
 }: {
     keyPassword: string;
-    Key: OrganizationKeyResponse;
-}): Promise<OrganizationKey> => {
+    Key: OrganizationKey;
+}): Promise<CachedOrganizationKey> => {
     if (!Key.PrivateKey) {
         return {
             Key,
