@@ -16,6 +16,7 @@ const exampleVevent = {
         value: { year: 2020, month: 3, day: 12, hours: 9, minutes: 30, seconds: 0, isUTC: false },
         parameters: { tzid: 'Europe/Zurich' },
     },
+    rrule: { value: { freq: 'WEEKLY', until: { year: 2020, month: 5, day: 15 } } },
     location: { value: 'asd' },
     sequence: { value: 0 },
 };
@@ -27,10 +28,7 @@ describe('createInviteIcs for REPLY method', () => {
             prodId: 'Proton Calendar',
             emailTo: 'uid@proton.me',
             partstat: ICAL_ATTENDEE_STATUS.ACCEPTED,
-            vevent: {
-                ...exampleVevent,
-                rrule: { value: { freq: 'WEEKLY', until: { year: 2020, month: 5, day: 15 } } },
-            },
+            vevent: exampleVevent,
             keepDtstamp: true,
         };
         const ics = createInviteIcs(params);
@@ -44,6 +42,8 @@ UID:test-event
 DTSTART;TZID=Europe/Zurich:20200312T083000
 DTEND;TZID=Europe/Zurich:20200312T093000
 SEQUENCE:0
+RRULE:FREQ=WEEKLY;UNTIL=20200515
+LOCATION:asd
 DTSTAMP:20200901T120000Z
 ATTENDEE;PARTSTAT=ACCEPTED:uid@proton.me
 END:VEVENT
@@ -74,6 +74,8 @@ UID:test-event
 DTSTART;TZID=Europe/Zurich:20200312T083000
 DTEND;TZID=Europe/Zurich:20200312T093000
 SEQUENCE:0
+RRULE:FREQ=WEEKLY;UNTIL=20200515
+LOCATION:asd
 SUMMARY:
 DTSTAMP:20200901T120000Z
 ATTENDEE;PARTSTAT=ACCEPTED:uid@proton.me
@@ -109,6 +111,8 @@ DTSTART;TZID=Europe/Zurich:20200312T083000
 DTEND;TZID=Europe/Zurich:20200312T093000
 SEQUENCE:0
 RECURRENCE-ID:20210618T150000Z
+RRULE:FREQ=WEEKLY;UNTIL=20200515
+LOCATION:asd
 SUMMARY:dcf
 DTSTAMP:20200901T120000Z
 ATTENDEE;PARTSTAT=ACCEPTED:uid@proton.me
