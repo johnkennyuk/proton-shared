@@ -17,14 +17,14 @@ export const getAddressesWithKeysToActivate = (user: tsUserModel, addresses: Add
 
 interface Args {
     addressKeys: CachedKey[];
-    mailboxPassword: string;
+    keyPassword: string;
     api: Api;
 }
-export const activateMemberAddressKeys = async ({ addressKeys, mailboxPassword, api }: Args) => {
+export const activateMemberAddressKeys = async ({ addressKeys, keyPassword, api }: Args) => {
     if (!addressKeys.length) {
         return;
     }
-    if (!mailboxPassword) {
+    if (!keyPassword) {
         throw new Error('Password required to generate keys');
     }
     const primaryPrivateKey = addressKeys[0].privateKey;
@@ -42,7 +42,7 @@ export const activateMemberAddressKeys = async ({ addressKeys, mailboxPassword, 
             // eslint-disable-next-line no-continue
             return;
         }
-        const encryptedPrivateKey = await encryptPrivateKey(privateKey, mailboxPassword);
+        const encryptedPrivateKey = await encryptPrivateKey(privateKey, keyPassword);
         const SignedKeyList = await getSignedKeyList(actionableAddressKeys, primaryPrivateKey);
 
         await api(activateKeyRoute({ ID: KeyID, PrivateKey: encryptedPrivateKey, SignedKeyList }));

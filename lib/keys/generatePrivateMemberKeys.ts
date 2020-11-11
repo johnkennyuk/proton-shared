@@ -16,18 +16,18 @@ export const getAddressesWithKeysToGenerate = (user: tsUserModel, addresses: Add
 
 interface Args {
     address: Address;
-    mailboxPassword: string;
+    keyPassword: string;
     api: Api;
 }
 
-export const generatePrivateMemberKeys = async ({ address, mailboxPassword, api }: Args) => {
-    if (!mailboxPassword) {
+export const generatePrivateMemberKeys = async ({ address, keyPassword, api }: Args) => {
+    if (!keyPassword) {
         throw new Error('Password required to generate keys');
     }
 
     const { privateKey, privateKeyArmored } = await generateAddressKey({
         email: address.Email,
-        passphrase: mailboxPassword,
+        passphrase: keyPassword,
         encryptionConfig: ENCRYPTION_CONFIGS[DEFAULT_ENCRYPTION_CONFIG],
     });
 
